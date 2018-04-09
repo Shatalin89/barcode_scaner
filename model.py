@@ -1,14 +1,15 @@
+import sqlalchemy
 from sqlalchemy import Table, Column, Integer, String, MetaData, Boolean, \
     ForeignKey, DateTime, create_engine
 from sqlalchemy.sql.functions import now
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-Base = declarative_base()
 
 metadata = MetaData()
 engine = create_engine('sqlite:///base.db')
-_SessionFactory = sessionmaker(bind=engine)
+
+Base = declarative_base()
 
 
 
@@ -28,7 +29,9 @@ class Ticket(Base):
     __tablename__ = 'ticket'
     id = Column(Integer, primary_key=True)
     cod_hs = Column(Integer, nullable=True)
+    nom_bill_kn = Column(Integer, ForeignKey("event.id"))
     row = Column(Integer, nullable=True)
+    status = Column(String, nullable=True)
     place = Column(Integer, nullable=True)
     sector = Column(Integer)
     nom_res = Column('NomRes', Integer, nullable=True)
@@ -38,17 +41,11 @@ class Ticket(Base):
     date_edit = Column('date_edit', DateTime, nullable=True)
     flag_check = Column('FlagCheck', Boolean, default=False)
 
-    def __init__(self, cod_hs, nom_res):
+    def __init__(self, cod_hs, nom_bill_kn):
         self.cod_hs = cod_hs
-        self.nom_res = nom_res
+        self.nom_bill_kn = nom_bill_kn
 
     def __repr__(self):
         return "<Ticket('%s','%s','%s')>" % (self.cod_hs, self.row, self.place)
 
-
-
-def session_factory():
-
-    Base.metadata.create_all(engine)
-    return _SessionFactory()
-session_factory()
+Base.metadata.create_all(engine)
