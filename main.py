@@ -21,19 +21,23 @@ class MyWin(QtWidgets.QMainWindow):
             self.ui.comboBoxEvent.addItem(event['text'])
 
 
-
-
-
     def keyPressEvent(self, qKeyEvent):
-        print(qKeyEvent.key())
+        self.ui.yesLabel.setText('')
+        self.ui.noLabel.setText('')
         if qKeyEvent.key() == QtCore.Qt.Key_Return:
-            cod_hs = int(self.ui.lineEdit.text())
-            nmk = self.ui.comboBoxEvent.currentText().split(':')[0]
-            print(cod_hs)
-            print(nmk)
-            self.tl.check_ticket(cod_hs, int(nmk))
+            try:
+                cod_hs = int(self.ui.lineEdit.text())
+                nmk = self.ui.comboBoxEvent.currentText().split(':')[0]
+                if self.tl.check_ticket(cod_hs, int(nmk)):
+                    self.ui.yesLabel.setText('Пропуск')
+                    self.db.set_check_ticket(cod_hs)
+                else:
+                    self.ui.yesLabel.setText('Билет не действителен')
+            except Exception as er:
+                    self.ui.yesLabel.setText('Ошибка ввода')
         else:
             super().keyPressEvent(qKeyEvent)
+        self.ui.lineEdit.setFocus()
         self.ui.lineEdit.setText('')
 
 

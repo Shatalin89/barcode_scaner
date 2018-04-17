@@ -6,7 +6,7 @@ class TikcetsLibs:
 
     URL_SEANS = 'http://185.60.133.130:3370/api/events/all/'
     URL_TICKETS = 'http://185.60.133.130:3370/api/event/place/{nombilkn}/'
-    TOKEN = 'token'
+    TOKEN = '57a31030be435ba53ff327910df547ca1aed280c'
     headers = {'Content-type': 'application/json',
                'Authorization': 'Token {token}'.format(token=TOKEN)}
 
@@ -31,14 +31,11 @@ class TikcetsLibs:
     def check_ticket(self, cod_hs, nombilkn):
         ticket = self.db.get_ticket(cod_hs)
         event = self.db.get_event(nombilkn)
-        if ticket:
+        if not ticket:
             return False
         elif self.is_valid_ticket(ticket, event) and not self.__check_ticket_in_within(ticket):
-            self.db.set_check_ticket(cod_hs)
-            print('set True')
             return True
         else:
-            print('Invalid')
             return False
 
 
