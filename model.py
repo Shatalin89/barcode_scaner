@@ -23,6 +23,9 @@ class Event(Base):
     def __init__(self, nom_bill_kn):
         self.nom_bill_kn = nom_bill_kn
 
+    def __repr__(self):
+        return "%s: %s (%s)" % (self.nom_bill_kn, self.name_event, self.date_event)
+
 
 class Ticket(Base):
 

@@ -22,7 +22,7 @@ class TikcetsLibs:
         elif method == "FILE":
             pass
         else:
-            return {'ERROR':'INVALIT METHOD'}
+            return {'ERROR': 'INVALIT METHOD'}
 
     def is_valid_ticket(self, ticket, event):
         if self.__check_ticket_in_event(ticket, event):
@@ -31,11 +31,15 @@ class TikcetsLibs:
     def check_ticket(self, cod_hs, nombilkn):
         ticket = self.db.get_ticket(cod_hs)
         event = self.db.get_event(nombilkn)
-        if self.is_valid_ticket(ticket, event) and not self.__check_ticket_in_within(ticket):
+        if ticket:
+            return False
+        elif self.is_valid_ticket(ticket, event) and not self.__check_ticket_in_within(ticket):
             self.db.set_check_ticket(cod_hs)
             print('set True')
+            return True
         else:
             print('Invalid')
+            return False
 
 
     def __check_ticket_in_event(self, ticket, current_event):

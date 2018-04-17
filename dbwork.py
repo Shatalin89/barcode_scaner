@@ -34,17 +34,19 @@ class data_storage():
 
     def get_ticket(self, cod_hs):
         ticket = self.conn.query(Ticket).filter_by(cod_hs=cod_hs).first()
-        data_res = {
-            'cod_hs': ticket.cod_hs,
-            'flag_check': ticket.flag_check,
-            'nom_bill_kn': ticket.nom_bill_kn,
-            'row': ticket.row,
-            'place': ticket.place,
-            'nom_res': ticket.nom_res,
-            'name': ticket.name,
-            'status': ticket.status,
+        data_res = None
+        if ticket:
+            data_res = {
+                'cod_hs': ticket.cod_hs,
+                'flag_check': ticket.flag_check,
+                'nom_bill_kn': ticket.nom_bill_kn,
+                'row': ticket.row,
+                'place': ticket.place,
+                'nom_res': ticket.nom_res,
+                'name': ticket.name,
+                'status': ticket.status,
 
-        }
+            }
         return data_res
 
     def get_event(self, nom_bill_kn):
@@ -56,6 +58,10 @@ class data_storage():
 
         }
         return data_res
+
+    def get_all_event(self):
+        events = self.conn.query(Event).all()
+        return [{'id': x.nom_bill_kn, 'text': str(x)} for x in events]
 
     def set_check_ticket(self, cod_hs):
         ticket = self.conn.query(Ticket).filter_by(cod_hs=cod_hs).first()
