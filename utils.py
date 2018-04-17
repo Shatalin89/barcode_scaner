@@ -4,7 +4,6 @@ from dbwork import *
 
 class TikcetsLibs:
 
-
     URL_SEANS = 'http://185.60.133.130:3370/api/events/all/'
     URL_TICKETS = 'http://185.60.133.130:3370/api/event/place/{nombilkn}/'
     TOKEN = 'token'
@@ -25,6 +24,31 @@ class TikcetsLibs:
         else:
             return {'ERROR':'INVALIT METHOD'}
 
+    def is_valid_ticket(self, ticket, event):
+        if self.__check_ticket_in_event(ticket, event):
+            return True
+
+    def check_ticket(self, cod_hs, nombilkn):
+        ticket = self.db.get_ticket(cod_hs)
+        event = self.db.get_event(nombilkn)
+        if self.is_valid_ticket(ticket, event) and not self.__check_ticket_in_within(ticket):
+            self.db.set_check_ticket(cod_hs)
+            print('set True')
+        else:
+            print('Invalid')
+
+
+    def __check_ticket_in_event(self, ticket, current_event):
+        if ticket['nom_bill_kn'] == current_event['nom_bill_kn']:
+            return True
+        else:
+            return False
+
+    def __check_ticket_in_within(self, ticket):
+        if ticket['flag_check']:
+            return True
+        else:
+            return False
 
     def get_seans(self, method='URL'):
         if method == 'URL':
@@ -47,5 +71,4 @@ class TikcetsLibs:
     def __get_ticket_by_file(self, name_base, nom_bill_kn):
         pass
 
-    def check_ticket(self, barcode=None):
-        pass
+

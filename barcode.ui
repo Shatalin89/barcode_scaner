@@ -1,165 +1,99 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>BarcodeMain</class>
- <widget class="QMainWindow" name="BarcodeMain">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1119</width>
-    <height>836</height>
+    <width>800</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QWidget" name="verticalLayoutWidget_2">
-    <property name="geometry">
-     <rect>
-      <x>560</x>
-      <y>10</y>
-      <width>541</width>
-      <height>401</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout_2">
-     <item>
-      <widget class="QTableWidget" name="tableWidget"/>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QTableWidget" name="tableWidget_2">
-    <property name="geometry">
-     <rect>
-      <x>560</x>
-      <y>420</y>
-      <width>539</width>
-      <height>399</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>541</width>
-      <height>80</height>
+      <width>371</width>
+      <height>541</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QLabel" name="label">
+      <widget class="QLineEdit" name="lineEdit">
        <property name="maximumSize">
         <size>
          <width>16777215</width>
          <height>40</height>
         </size>
        </property>
-       <property name="font">
-        <font>
-         <pointsize>15</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Штрих Код:</string>
-       </property>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="barcode_input">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
+      <widget class="QLabel" name="sityLabel">
        <property name="maximumSize">
         <size>
          <width>16777215</width>
-         <height>40</height>
+         <height>20</height>
         </size>
        </property>
-       <property name="font">
-        <font>
-         <pointsize>15</pointsize>
-        </font>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="horizontalLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>90</y>
-      <width>541</width>
-      <height>80</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QPushButton" name="pushButton">
-       <property name="maximumSize">
-        <size>
-         <width>500</width>
-         <height>50</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>12</pointsize>
-        </font>
-       </property>
        <property name="text">
-        <string>Синхронизировать базу</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="verticalLayoutWidget_3">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>420</y>
-      <width>551</width>
-      <height>401</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout_3">
-     <item>
-      <widget class="QLabel" name="label_3">
-       <property name="font">
-        <font>
-         <pointsize>30</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Действителен</string>
+        <string>Город</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="label_2">
+      <widget class="QComboBox" name="comboBoxSity"/>
+     </item>
+     <item>
+      <widget class="QLabel" name="eventLabel">
        <property name="maximumSize">
         <size>
          <width>16777215</width>
-         <height>16777215</height>
+         <height>20</height>
         </size>
        </property>
-       <property name="font">
-        <font>
-         <pointsize>30</pointsize>
-        </font>
-       </property>
        <property name="text">
-        <string>Не действителен</string>
+        <string>Мероприятие</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="comboBoxEvent"/>
+     </item>
+     <item>
+      <widget class="QLabel" name="yesLabel">
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="noLabel">
+       <property name="text">
+        <string>TextLabel</string>
        </property>
       </widget>
      </item>
     </layout>
    </widget>
   </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
  <connections/>
