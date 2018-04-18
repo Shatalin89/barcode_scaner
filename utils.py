@@ -32,13 +32,13 @@ class TikcetsLibs:
         ticket = self.db.get_ticket(cod_hs)
         event = self.db.get_event(nombilkn)
         if not ticket:
-            return 'not_ticket'
+            return {'status': 'not_ticket', 'ticket': ticket, 'event': self.db.get_event(ticket['nom_bill_kn'])}
         elif not self.__check_ticket_in_event(ticket, event):
-            return 'not_event'
+            return {'status': 'not_event', 'ticket': ticket, 'event': self.db.get_event(ticket['nom_bill_kn'])}
         elif self.__check_ticket_in_within(ticket):
-            return 'within'
+            return {'status': 'within', 'ticket': ticket, 'event': self.db.get_event(ticket['nom_bill_kn'])}
         elif self.is_valid_ticket(ticket, event) and not self.__check_ticket_in_within(ticket):
-            return 'good'
+            return {'status': 'good', 'ticket': ticket, 'event': self.db.get_event(ticket['nom_bill_kn'])}
         else:
             return False
 

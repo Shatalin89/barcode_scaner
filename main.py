@@ -62,17 +62,23 @@ class MyWin(QtWidgets.QMainWindow):
         self.ui.noLabel.setText('')
         if qKeyEvent.key() == QtCore.Qt.Key_Return:
             try:
+                ticket_templ = 'Штрих-код: {cod_hs}\n' \
+                               'Мероприятие: {name_event}\n' \
+                               'Сектор: {sector}\n' \
+                               'Ряд: {row} Место: {place}'
                 cod_hs = int(self.ui.lineEdit.text())
                 print(self.current_event)
                 check = self.tl.check_ticket(cod_hs, int(self.current_event))
-                if check == 'good':
+                if check['status'] == 'good':
                     self.ui.yesLabel.setText('Пропуск')
+                    self.ui.noLabel.setText(ticket_templ.format(cod_hs=check['ticket']['cod_hs'],
+                                                                ))
                     self.db.set_check_ticket(cod_hs)
-                elif check == 'not_event':
+                elif check['status'] == 'not_event':
                     self.ui.noLabel.setText('Не корректное \nмероприятие')
-                elif check == 'not_ticket':
+                elif check['status'] == 'not_ticket':
                     self.ui.noLabel.setText('Билет не найден')
-                elif check == 'within':
+                elif check['status'] == 'within':
                     self.ui.noLabel.setText('Билет уже \nпросканирован')
                 else:
                     self.ui.noLabel.setText('Билет не \nдействителен')
