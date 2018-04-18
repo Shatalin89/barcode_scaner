@@ -6,7 +6,7 @@ class TikcetsLibs:
 
     URL_SEANS = 'http://185.60.133.130:3370/api/events/all/'
     URL_TICKETS = 'http://185.60.133.130:3370/api/event/place/{nombilkn}/'
-    TOKEN = '57a31030be435ba53ff327910df547ca1aed280c'
+    TOKEN = 'token'
     headers = {'Content-type': 'application/json',
                'Authorization': 'Token {token}'.format(token=TOKEN)}
 
@@ -16,9 +16,9 @@ class TikcetsLibs:
         self.path_file = file
         self.db = data_storage()
 
-    def get_tickets(self, method='URL'):
+    def get_tickets(self, sity, nombilkn, method='URL'):
         if method == 'URL':
-            self.__get_ticket_by_url('test', 20)
+            self.__get_ticket_by_url(sity, nombilkn)
         elif method == "FILE":
             pass
         else:
@@ -32,11 +32,14 @@ class TikcetsLibs:
         ticket = self.db.get_ticket(cod_hs)
         event = self.db.get_event(nombilkn)
         if not ticket:
-            return False
+            return 'not_ticket'
+        elif self.__check_ticket_in_within(ticket):
+            return 'within'
         elif self.is_valid_ticket(ticket, event) and not self.__check_ticket_in_within(ticket):
-            return True
+            return 'good'
         else:
             return False
+
 
 
     def __check_ticket_in_event(self, ticket, current_event):

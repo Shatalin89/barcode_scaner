@@ -51,4 +51,3 @@ class Ticket(Base):
     def __repr__(self):
         return "<Ticket('%s','%s','%s')>" % (self.cod_hs, self.row, self.place)
 
-Base.metadata.create_all(engine)

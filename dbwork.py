@@ -1,17 +1,20 @@
 import sqlalchemy
 import datetime
-from model import *
+from model import Base
 from sqlalchemy.orm import sessionmaker
 
 
 class data_storage():
 
-    def __init__(self):
+    def __init__(self, name_sity):
+        engine = sqlalchemy.create_engine('sqlite:///{name_sity}.db'.format(name_sity=name_sity))
+        # Base.metadata.create_all(engine)
         session = sessionmaker(bind=engine)
         self.conn = session()
 
     def set_events(self, list_event):
         for event in list_event:
+            #вот тут проверка наличия мероприятия
             event_add =  Event(event['NomBilKn'])
             event_add.id = event['NomBilKn']
             event_add.name_event = event['Name_Spekt']
@@ -24,6 +27,7 @@ class data_storage():
 
     def set_tickets(self, nombilkn, list_tickets):
         for ticket in list_tickets:
+            #вот тут добавить проверку наличия билета
             ticket_add = Ticket(ticket['cod_hs'], nombilkn)
             ticket_add.status = ticket['STATUS']
             ticket_add.place = ticket['SEAT']
@@ -48,6 +52,11 @@ class data_storage():
 
             }
         return data_res
+
+    def get_tickets(self, sity, nombilkn):
+        tickets = self.conn.query(Ticket).filter_by(nom_bill_kn=nombilkn).order_by(Ticket.flag_check).all()
+        result = [{'id': ticket.id, 'cod_hs': ticket.cod_hs, 'nombilkn': ticket.nom_bill_kn, 'row': ticket.row, 'place': ticket.place, 'sector': ticket.sector, 'status': ticket.status, 'nom_res': ticket.nom_res, 'flag_check': ticket.flag_check} for ticket in tickets]
+        return result
 
     def get_event(self, nom_bill_kn):
         event = self.conn.query(Event).filter_by(nom_bill_kn=nom_bill_kn).first()
