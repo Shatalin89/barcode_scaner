@@ -12,13 +12,13 @@ class MyWin(QtWidgets.QMainWindow):
         QtWidgets.QWidget.__init__(self, parent)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        self.dict_check = {'code':'111'}
         self.ui.yesLabel.setText('')
         self.ui.noLabel.setText('')
         self.ui.lineEdit.setFocus()
         self.db = data_storage()
         self.tl = TikcetsLibs('')
         self.ui.comboBoxSity.addItems(['test', 'Irkutsk'])
+        self.ui.pushButton.clicked.connect(self.sync_data)
         self.ui.comboBoxSity.currentIndexChanged.connect(self.set_focus)
         self.ui.comboBoxEvent.currentIndexChanged.connect(self.set_focus)
         self.ui.tableView.clicked.connect(self.set_focus)
@@ -26,19 +26,21 @@ class MyWin(QtWidgets.QMainWindow):
         self.ui.tableView.verticalScrollBar().valueChanged.connect(self.set_focus)
 
         self.current_sity = 'test'
-        self.current_event = 0
+        self.current_event = self.ui.comboBoxEvent.currentText().split(':')[0]
         for event in self.db.get_all_event():
             self.ui.comboBoxEvent.addItem(event['text'])
 
     def set_focus(self):
         self.current_sity = self.ui.comboBoxSity.currentText()
         self.current_event = self.ui.comboBoxEvent.currentText().split(':')[0]
+        self.set_table_ticket(self.current_event, self.current_sity)
         self.ui.lineEdit.setFocus()
         self.ui.lineEdit.setText('')
-        self.set_table_ticket(self.current_event, self.current_sity)
+        # self.set_table_ticket(self.current_event, self.current_sity)
 
 
     def set_table_ticket(self, nombilkn, sity):
+        print('start set ticket table')
         dict_ticket = self.db.get_tickets(sity, nombilkn)
         i = 0
         self.ui.tableView.setRowCount(len(dict_ticket))
@@ -61,23 +63,40 @@ class MyWin(QtWidgets.QMainWindow):
         if qKeyEvent.key() == QtCore.Qt.Key_Return:
             try:
                 cod_hs = int(self.ui.lineEdit.text())
+                print(self.current_event)
                 check = self.tl.check_ticket(cod_hs, int(self.current_event))
                 if check == 'good':
                     self.ui.yesLabel.setText('Пропуск')
                     self.db.set_check_ticket(cod_hs)
+                elif check == 'not_event':
+                    self.ui.noLabel.setText('Не корректное \nмероприятие')
                 elif check == 'not_ticket':
-                    self.ui.noLabel.setText('Билет не действителен')
+                    self.ui.noLabel.setText('Билет не найден')
                 elif check == 'within':
-                    self.ui.noLabel.setText('Билет уже просканирован')
+                    self.ui.noLabel.setText('Билет уже \nпросканирован')
                 else:
-                    self.ui.noLabel.setText('Билет не действителен')
+                    self.ui.noLabel.setText('Билет не \nдействителен')
+                self.set_focus()
             except Exception as er:
-                    self.ui.yesLabel.setText('Ошибка ввода')
+                print(er)
+                self.ui.yesLabel.setText('Ошибка ввода')
         else:
             super().keyPressEvent(qKeyEvent)
         self.ui.lineEdit.setFocus()
         self.ui.lineEdit.setText('')
-        self.set_table_ticket(self.current_event, self.current_sity)
+
+    def sync_data(self):
+        print('clicked')
+        list_event = self.tl.get_seans()
+        print(list_event)
+        for i in list_event:
+            print(i)
+            self.tl.get_tickets(self.current_sity, i)
+        self.ui.label_2.setText('Синхронизация завершена')
+        self.set_focus()
+
+        return True
+
 
 
 

@@ -33,6 +33,8 @@ class TikcetsLibs:
         event = self.db.get_event(nombilkn)
         if not ticket:
             return 'not_ticket'
+        elif not self.__check_ticket_in_event(ticket, event):
+            return 'not_event'
         elif self.__check_ticket_in_within(ticket):
             return 'within'
         elif self.is_valid_ticket(ticket, event) and not self.__check_ticket_in_within(ticket):
@@ -56,7 +58,7 @@ class TikcetsLibs:
 
     def get_seans(self, method='URL'):
         if method == 'URL':
-            self.__get_seans_by_url('test')
+            return self.__get_seans_by_url('test')
 
     def __get_ticket_by_url(self, name_base, nom_bill_kn):
         res = self.get_data(self.URL_TICKETS.format(nombilkn=nom_bill_kn)).json()
@@ -67,10 +69,13 @@ class TikcetsLibs:
         return requests.get(url, headers=self.headers)
 
     def __get_seans_by_url(self, name_base):
-        res = self.get_data(self.URL_SEANS).json()
-        print(res[name_base])
-        self.db.set_events(res[name_base])
-        return True
+        try:
+            res = self.get_data(self.URL_SEANS).json()
+            print(res[name_base])
+            return self.db.set_events(res[name_base])
+        except Exception as er:
+            print(er)
+            return False
 
     def __get_ticket_by_file(self, name_base, nom_bill_kn):
         pass

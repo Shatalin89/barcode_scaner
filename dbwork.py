@@ -1,21 +1,26 @@
 import sqlalchemy
 import datetime
-from model import Base
+from model import Base, Event, Ticket
 from sqlalchemy.orm import sessionmaker
 
 
 class data_storage():
 
-    def __init__(self, name_sity):
+    def __init__(self, name_sity='test'):
         engine = sqlalchemy.create_engine('sqlite:///{name_sity}.db'.format(name_sity=name_sity))
-        # Base.metadata.create_all(engine)
+        Base.metadata.create_all(engine)
         session = sessionmaker(bind=engine)
         self.conn = session()
 
     def set_events(self, list_event):
+        events = []
         for event in list_event:
+            print(event)
             #вот тут проверка наличия мероприятия
-            event_add =  Event(event['NomBilKn'])
+            event_add = self.conn.query(Event).filter_by(nom_bill_kn=event['NomBilKn']).first()
+            if not event_add:
+                event_add =  Event(event['NomBilKn'])
+            events.append(event['NomBilKn'])
             event_add.id = event['NomBilKn']
             event_add.name_event = event['Name_Spekt']
             print(event['DataSpekt'])
@@ -24,11 +29,16 @@ class data_storage():
                 event_add.date_event = data_event
             self.conn.add(event_add)
         self.conn.commit()
+        print(events)
+        return events
 
     def set_tickets(self, nombilkn, list_tickets):
         for ticket in list_tickets:
+            print(ticket)
             #вот тут добавить проверку наличия билета
-            ticket_add = Ticket(ticket['cod_hs'], nombilkn)
+            ticket_add = self.conn.query(Ticket).filter_by(nom_bill_kn=nombilkn, cod_hs=ticket['cod_hs']).first()
+            if not ticket_add:
+                ticket_add = Ticket(ticket['cod_hs'], nombilkn)
             ticket_add.status = ticket['STATUS']
             ticket_add.place = ticket['SEAT']
             ticket_add.row = ticket['RAW']
