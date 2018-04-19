@@ -109,7 +109,7 @@ class Ui_MainWindow(object):
         self.syncTicketButton.setText(_translate("MainWindow", "Sync"))
         self.yesLabel.setText(_translate("MainWindow", "TextLabel"))
         self.noLabel.setText(_translate("MainWindow", "TextLabel"))
-        self.label.setText(_translate("MainWindow", "TextLabel"))
-        self.label_2.setText(_translate("MainWindow", "TextLabel"))
+        self.label.setText(_translate("MainWindow", ""))
+        self.label_2.setText(_translate("MainWindow", ""))
         self.pushButton.setText(_translate("MainWindow", "Синхронизировать"))
 
