@@ -33,20 +33,23 @@ class MyWin(QtWidgets.QMainWindow):
         self.set_combobox_event()
 
     def set_combobox_event(self):
-        del self.tl
-        del self.db
-        self.current_sity = self.ui.comboBoxSity.currentText()
         self.current_event = self.ui.comboBoxEvent.currentText().split(':')[0]
         self.ui.comboBoxEvent.clear()
-        self.tl = TikcetsLibs(self.current_sity)
-        self.db = data_storage(self.current_sity)
+        list_events = []
+        self.ui.comboBoxEvent.clear()
+
         for event in self.db.get_all_event():
-            self.ui.comboBoxEvent.addItem(event['text'])
+            list_events.append(event['text'])
+        self.ui.comboBoxEvent.addItems(list_events)
         self.set_table_ticket(self.current_event, self.current_sity)
 
         self.set_focus()
 
     def change_combobox(self):
+        self.current_sity = self.ui.comboBoxSity.currentText()
+        self.current_event = self.ui.comboBoxEvent.currentText().split(':')[0]
+        self.tl = TikcetsLibs(self.current_sity)
+        self.db = data_storage(self.current_sity)
         self.current_sity = self.ui.comboBoxSity.currentText()
         self.current_event = self.ui.comboBoxEvent.currentText().split(':')[0]
         self.set_table_ticket(self.current_event, self.current_sity)
