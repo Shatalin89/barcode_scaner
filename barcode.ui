@@ -19,11 +19,14 @@
      <rect>
       <x>0</x>
       <y>3</y>
-      <width>1111</width>
-      <height>741</height>
+      <width>1121</width>
+      <height>751</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="mainLayout">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetMaximumSize</enum>
+     </property>
      <property name="leftMargin">
       <number>10</number>
      </property>
@@ -75,7 +78,33 @@
         </widget>
        </item>
        <item>
-        <widget class="QComboBox" name="comboBoxEvent"/>
+        <layout class="QHBoxLayout" name="buttonlyaout">
+         <property name="spacing">
+          <number>6</number>
+         </property>
+         <property name="sizeConstraint">
+          <enum>QLayout::SetMinimumSize</enum>
+         </property>
+         <property name="bottomMargin">
+          <number>100</number>
+         </property>
+         <item>
+          <widget class="QPushButton" name="syncTicketButton">
+           <property name="maximumSize">
+            <size>
+             <width>50</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Sync</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="comboBoxEvent"/>
+         </item>
+        </layout>
        </item>
        <item>
         <widget class="QLabel" name="yesLabel">
@@ -155,7 +184,7 @@
      <x>0</x>
      <y>0</y>
      <width>1116</width>
-     <height>26</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

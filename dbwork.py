@@ -7,6 +7,7 @@ from sqlalchemy.orm import sessionmaker
 class data_storage():
 
     def __init__(self, name_sity='test'):
+        print('create_engine:', 'sqlite:///{name_sity}.db'.format(name_sity=name_sity))
         engine = sqlalchemy.create_engine('sqlite:///{name_sity}.db'.format(name_sity=name_sity))
         Base.metadata.create_all(engine)
         session = sessionmaker(bind=engine)
@@ -39,10 +40,14 @@ class data_storage():
             ticket_add = self.conn.query(Ticket).filter_by(nom_bill_kn=nombilkn, cod_hs=ticket['cod_hs']).first()
             if not ticket_add:
                 ticket_add = Ticket(ticket['cod_hs'], nombilkn)
-            ticket_add.status = ticket['STATUS']
+            ticket_add.status = ticket['status']
             ticket_add.place = ticket['SEAT']
-            ticket_add.row = ticket['RAW']
+            ticket_add.row = ticket['raw']
             ticket_add.sector = ticket['cod_zone']
+            ticket_add.sector_name = ticket['NAME_sec']
+            ticket_add.nom_kassa = ticket['NomKassa']
+            ticket_add.nom_res = ticket['NOMRes']
+            ticket_add.price = ticket['price']
             self.conn.add(ticket_add)
         self.conn.commit()
 
@@ -55,6 +60,9 @@ class data_storage():
                 'flag_check': ticket.flag_check,
                 'nom_bill_kn': ticket.nom_bill_kn,
                 'row': ticket.row,
+                'price': ticket.price,
+                'nom_kassa': ticket.nom_kassa,
+                'name_sec': ticket.sector_name,
                 'place': ticket.place,
                 'nom_res': ticket.nom_res,
                 'name': ticket.name,

@@ -11,6 +11,19 @@ engine = create_engine('sqlite:///base.db')
 
 Base = declarative_base()
 
+class MetaInfo(Base):
+    __tablename__ = 'meta'
+    id = Column(Integer, primary_key=True)
+    event = Column(String, nullable=True)
+    datetim_add =  Column(DateTime, default=now())
+    datetim_edit =  Column(DateTime, default=now())
+
+    def __init__(self, event):
+        self.event = event
+
+    def __repr__(self):
+        return "%s: %s" % (self.event, self.datetim_add)
+
 
 
 class Event(Base):
@@ -37,7 +50,10 @@ class Ticket(Base):
     status = Column(String, nullable=True)
     place = Column(Integer, nullable=True)
     sector = Column(Integer)
+    sector_name = Column(String, nullable=True)
     nom_res = Column('NomRes', Integer, nullable=True)
+    nom_kassa = Column('NomKassa', Integer, nullable=True)
+    price = Column('Price', String, nullable=True)
     name = Column('Name', String, nullable=True)
     phone = Column('Phone', String, nullable=True)
     date_add = Column('date_add', DateTime, default=now())

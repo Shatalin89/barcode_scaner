@@ -4,17 +4,17 @@ from dbwork import *
 
 class TikcetsLibs:
 
-    URL_SEANS = 'http://185.60.133.130:3370/api/events/all/'
-    URL_TICKETS = 'http://185.60.133.130:3370/api/event/place/{nombilkn}/'
-    TOKEN = 'token'
+    URL_SEANS = 'http://185.60.133.130:3370/api/events/all/{sity}/'
+    URL_TICKETS = 'http://185.60.133.130:3370/api/event/place/{sity}/{nombilkn}/'
+    TOKEN = '8bf0c515e9dd08d02e6ab0211d8996b371b7fcab'
     headers = {'Content-type': 'application/json',
                'Authorization': 'Token {token}'.format(token=TOKEN)}
 
-    def __init__(self, url, file=None):
+    def __init__(self, name_base, file=None):
         self.db = 'connsql'
-        self.url_ticket_list = url
+        self.url_ticket_list = ''
         self.path_file = file
-        self.db = data_storage()
+        self.db = data_storage(name_base)
 
     def get_tickets(self, sity, nombilkn, method='URL'):
         if method == 'URL':
@@ -31,6 +31,8 @@ class TikcetsLibs:
     def check_ticket(self, cod_hs, nombilkn):
         ticket = self.db.get_ticket(cod_hs)
         event = self.db.get_event(nombilkn)
+        print(ticket)
+        print(event)
         if not ticket:
             return {'status': 'not_ticket', 'ticket': ticket, 'event': self.db.get_event(ticket['nom_bill_kn'])}
         elif not self.__check_ticket_in_event(ticket, event):
@@ -56,12 +58,12 @@ class TikcetsLibs:
         else:
             return False
 
-    def get_seans(self, method='URL'):
+    def get_seans(self, sity, method='URL'):
         if method == 'URL':
-            return self.__get_seans_by_url('test')
+            return self.__get_seans_by_url(sity)
 
     def __get_ticket_by_url(self, name_base, nom_bill_kn):
-        res = self.get_data(self.URL_TICKETS.format(nombilkn=nom_bill_kn)).json()
+        res = self.get_data(self.URL_TICKETS.format(sity=name_base, nombilkn=nom_bill_kn)).json()
         self.db.set_tickets(nom_bill_kn, res[name_base])
         return True
 
@@ -70,12 +72,14 @@ class TikcetsLibs:
 
     def __get_seans_by_url(self, name_base):
         try:
-            res = self.get_data(self.URL_SEANS).json()
+            print(self.URL_SEANS.format(sity=name_base))
+            res = self.get_data(self.URL_SEANS.format(sity=name_base)).json()
+            print('res-------', res)
             print(res[name_base])
             return self.db.set_events(res[name_base])
         except Exception as er:
             print(er)
-            return False
+            return []
 
     def __get_ticket_by_file(self, name_base, nom_bill_kn):
         pass
