@@ -12,6 +12,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1116, 805)
+        MainWindow.setStyleSheet("QMainWindow {background: rgb(242, 204, 27);}");
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.horizontalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
@@ -53,7 +54,7 @@ class Ui_MainWindow(object):
         self.verticalLayout.addLayout(self.buttonlyaout)
         self.yesLabel = QtWidgets.QLabel(self.horizontalLayoutWidget)
         font = QtGui.QFont()
-        font.setPointSize(30)
+        font.setPointSize(40)
         font.setBold(True)
         font.setWeight(75)
         self.yesLabel.setFont(font)
@@ -94,21 +95,21 @@ class Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
-        self.tableView.setColumnCount(7)
+        self.tableView.setColumnCount(8)
         self.tableView.setSortingEnabled(True)
         self.tableView.setHorizontalHeaderLabels(
-            ["cod_hs", "nom_bill_kn", "row", "place", "sector", "nom_res", "flag_check"])
+            ["cod_hs", "nom_bill_kn", "status", "row", "place", "sector", "nom_res", "flag_check"])
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "СИБКАССА"))
         self.sityLabel.setText(_translate("MainWindow", "Город"))
         self.eventLabel.setText(_translate("MainWindow", "Мероприятие"))
         self.syncTicketButton.setText(_translate("MainWindow", "Sync"))
-        self.yesLabel.setText(_translate("MainWindow", "TextLabel"))
-        self.noLabel.setText(_translate("MainWindow", "TextLabel"))
+        self.yesLabel.setText(_translate("MainWindow", ""))
+        self.noLabel.setText(_translate("MainWindow", ""))
         self.label.setText(_translate("MainWindow", ""))
         self.label_2.setText(_translate("MainWindow", ""))
         self.pushButton.setText(_translate("MainWindow", "Синхронизировать"))

@@ -73,7 +73,7 @@ class data_storage():
 
     def get_tickets(self, sity, nombilkn):
         tickets = self.conn.query(Ticket).filter_by(nom_bill_kn=nombilkn).order_by(Ticket.flag_check).all()
-        result = [{'id': ticket.id, 'cod_hs': ticket.cod_hs, 'nombilkn': ticket.nom_bill_kn, 'row': ticket.row, 'place': ticket.place, 'sector': ticket.sector, 'status': ticket.status, 'nom_res': ticket.nom_res, 'flag_check': ticket.flag_check} for ticket in tickets]
+        result = [{'id': ticket.id, 'status':ticket.status, 'cod_hs': ticket.cod_hs, 'nombilkn': ticket.nom_bill_kn, 'row': ticket.row, 'place': ticket.place, 'sector': ticket.sector_name, 'status': ticket.status, 'nom_res': ticket.nom_res, 'flag_check': ticket.flag_check} for ticket in tickets]
         return result
 
     def get_event(self, nom_bill_kn):
